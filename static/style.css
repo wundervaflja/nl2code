@@ -1,0 +1,70 @@
+@font-face {
+	font-family: 'Ananda Namaste';
+	font-style: normal;
+	font-weight: normal;
+	src: local('Ananda Namaste'), url('/static/Ananda_Namaste.woff') format('woff');
+}
+
+h1 {
+	font-family: 'Ananda Namaste', sans-serif;
+	font-size: 10vw;
+	text-align: center;
+}
+
+h2 {
+	font-family: 'Ananda Namaste', sans-serif;
+	font-size: 8vw;
+	text-align: center;
+}
+
+h3 {
+	font-family: 'Ananda Namaste', sans-serif;
+	font-size: 6vw;
+	text-align: center;
+}
+
+h4 {
+	font-family: 'Ananda Namaste', sans-serif;
+	font-size: 4vw;
+	text-align: center;
+}
+
+h5 {
+	font-family: 'Ananda Namaste', sans-serif;
+	font-size: 2vw;
+	text-align: center;
+}
+
+h6 {
+	font-family: 'Ananda Namaste', sans-serif;
+	font-size: 1vw;
+	-webkit-margin-before: -2em;
+	-webkit-margin-after: 0em;
+	text-align: center;
+}
+
+code {
+	font-family: 'Ananda Namaste', monospace;
+	font-size: 5vw;
+}
+
+label {
+	font-family: 'Ananda Namaste', monospace;
+	font-size: 1.5vw;
+}
+
+input[type=submit] {
+	font-family: 'Ananda Namaste', sans-serif;
+	font-size: 2vw;
+}
+
+.flash {
+	background: #cee5F5;
+	padding: 0.5em;
+	border: 1px solid #aacbe2;
+}
+
+.error {
+	background: #f0d6d6;
+	padding: 0.5em;
+}
