@@ -6,10 +6,10 @@ import numpy as np
 import sys, os
 import time
 
-import decoder
-import evaluation
-from dataset import *
-import config
+from nl2code import decoder
+from nl2code import evaluation
+from nl2code.dataset import *
+from nl2code import config
 
 
 class Learner(object):

@@ -9,21 +9,21 @@ import copy
 import heapq
 import sys
 
-from nn.layers.embeddings import Embedding
-from nn.layers.core import Dense, Dropout, WordDropout
-from nn.layers.recurrent import BiLSTM, LSTM
-import nn.optimizers as optimizers
-import nn.initializations as initializations
-from nn.activations import softmax
-from nn.utils.theano_utils import *
+from nl2code.nn.layers.embeddings import Embedding
+from nl2code.nn.layers.core import Dense, Dropout, WordDropout
+from nl2code.nn.layers.recurrent import BiLSTM, LSTM
+import nl2code.nn.optimizers as optimizers
+import nl2code.nn.initializations as initializations
+from nl2code.nn.activations import softmax
+from nl2code.nn.utils.theano_utils import *
 
-from config import config_info
-import config
-from lang.grammar import Grammar
-from parse import *
-from astnode import *
-from util import is_numeric
-from components import Hyp, PointerNet, CondAttLSTM
+from nl2code.config import config_info
+from nl2code import config
+from nl2code.lang.grammar import Grammar
+from nl2code.parse import *
+from nl2code.astnode import *
+from nl2code.util import is_numeric
+from nl2code.components import Hyp, PointerNet, CondAttLSTM
 
 sys.setrecursionlimit(50000)
 

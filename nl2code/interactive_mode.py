@@ -1,13 +1,13 @@
 import argparse, sys
-from nn.utils.generic_utils import init_logging
-from nn.utils.io_utils import deserialize_from_file, serialize_to_file
-from evaluation import *
-from dataset import canonicalize_query, query_to_data
+from nl2code.nn.utils.generic_utils import init_logging
+from nl2code.nn.utils.io_utils import deserialize_from_file, serialize_to_file
+from nl2code.evaluation import *
+from nl2code.dataset import canonicalize_query, query_to_data
 from collections import namedtuple
-from lang.py.parse import decode_tree_to_python_ast
-from model import Model
-from dataset import DataEntry, DataSet, Vocab, Action
-import config
+from nl2code.lang.py.parse import decode_tree_to_python_ast
+from nl2code.model import Model
+from nl2code.dataset import DataEntry, DataSet, Vocab, Action
+from nl2code import config
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-data_type', default='django', choices=['django', 'hs'])

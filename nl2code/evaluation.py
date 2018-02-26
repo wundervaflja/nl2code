@@ -6,9 +6,9 @@ from nltk.translate.bleu_score import sentence_bleu, corpus_bleu, SmoothingFunct
 import logging
 import traceback
 
-from nn.utils.generic_utils import init_logging
+from nl2code.nn.utils.generic_utils import init_logging
 
-from model import *
+from nl2code.model import *
 
 
 DJANGO_ANNOT_FILE = 'dataseta/en-django/all.anno'

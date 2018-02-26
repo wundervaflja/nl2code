@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
 
-from astnode import ASTNode
-from lang.py.grammar import type_str_to_type
-from lang.py.parse import parse
+from nl2code.astnode import ASTNode
+from nl2code.lang.py.grammar import type_str_to_type
+from nl2code.lang.py.parse import parse
 from collections import Counter
 import re
 

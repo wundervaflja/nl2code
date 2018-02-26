@@ -5,10 +5,10 @@ import token as tk
 from cStringIO import StringIO
 from tokenize import generate_tokens
 
-from astnode import ASTNode
-from lang.py.grammar import is_compositional_leaf, PY_AST_NODE_FIELDS, NODE_FIELD_BLACK_LIST, PythonGrammar
-from lang.util import escape
-from lang.util import typename
+from nl2code.astnode import ASTNode
+from nl2code.lang.py.grammar import is_compositional_leaf, PY_AST_NODE_FIELDS, NODE_FIELD_BLACK_LIST, PythonGrammar
+from nl2code.lang.util import escape
+from nl2code.lang.util import typename
 
 
 def python_ast_to_parse_tree(node):

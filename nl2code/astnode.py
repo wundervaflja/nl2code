@@ -3,7 +3,7 @@ import cPickle
 from collections import Iterable, OrderedDict, defaultdict
 from cStringIO import StringIO
 
-from lang.util import typename
+from nl2code.lang.util import typename
 
 class ASTNode(object):
     def __init__(self, node_type, label=None, value=None, children=None):

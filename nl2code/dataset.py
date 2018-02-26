@@ -1,6 +1,6 @@
 from __future__ import division
 import copy
-
+import os
 import nltk
 from collections import OrderedDict, defaultdict
 import logging
@@ -11,11 +11,14 @@ import re
 import astor
 from itertools import chain
 
-from nn.utils.io_utils import serialize_to_file, deserialize_from_file
+from nl2code.nn.utils.io_utils import serialize_to_file, deserialize_from_file
 
-import config
-from lang.py.parse import get_grammar
-from lang.py.unaryclosure import get_top_unary_closures, apply_unary_closures
+from nl2code import config
+from nl2code.lang.py.parse import get_grammar
+from nl2code.lang.py.unaryclosure import get_top_unary_closures, apply_unary_closures
+
+
+path = os.path.dirname(os.path.realpath(__file__))
 
 # define actions
 APPLY_RULE = 0
@@ -307,7 +310,7 @@ def parse_django_dataset_nt_only():
 
     # train_data
 
-    train_annot_file = 'dataset/en-django/train.anno'
+    train_annot_file = '%s/dataset/en-django/train.anno' % path
     train_parse_trees = all_parse_trees[0:16000]
     for line, parse_tree in zip(open(train_annot_file), train_parse_trees):
         if parse_tree.is_leaf:
@@ -339,7 +342,7 @@ def parse_django_dataset_nt_only():
 
     # test_data
 
-    test_annot_file = 'dataset/en-django/test.anno'
+    test_annot_file = '%s/dataset/en-django/test.anno' % path
     test_parse_trees = all_parse_trees[17000:18805]
     for line, parse_tree in zip(open(test_annot_file), test_parse_trees):
         if parse_tree.is_leaf:
@@ -361,9 +364,8 @@ def parse_django_dataset():
     from lang.util import escape
     MAX_QUERY_LENGTH = 70
     UNARY_CUTOFF_FREQ = 30
-
-    annot_file = 'dataset/en-django/all.anno'
-    code_file = 'dataset/en-django/all.code'
+    annot_file = '%s/dataset/en-django/all.anno' % path
+    code_file = '%s/dataset/en-django/all.code' % path
 
     data = preprocess_dataset(annot_file, code_file)
 
@@ -550,7 +552,7 @@ def parse_django_dataset():
     test_data.init_data_matrices()
 
     serialize_to_file((train_data, dev_data, test_data),
-                      'data/django.cleaned.dataset.freq3.par_info.refact.space_only.order_by_ulink_len.bin')
+                      '%s/data/django.cleaned.dataset.freq3.par_info.refact.space_only.order_by_ulink_len.bin' % path)
                       # 'data/django.cleaned.dataset.freq5.par_info.refact.space_only.unary_closure.freq{UNARY_CUTOFF_FREQ}.order_by_ulink_len.bin'.format(UNARY_CUTOFF_FREQ=UNARY_CUTOFF_FREQ))
 
     return train_data, dev_data, test_data

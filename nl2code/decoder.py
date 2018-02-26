@@ -2,7 +2,7 @@ import traceback
 import config
 import logging
 
-from model import *
+from nl2code.model import *
 
 def decode_python_dataset(model, dataset, verbose=True):
     from lang.py.parse import decode_tree_to_python_ast

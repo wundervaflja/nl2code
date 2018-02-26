@@ -5,7 +5,7 @@ import ast
 import inspect
 import astor
 
-from lang.grammar import Grammar
+from nl2code.lang.grammar import Grammar
 
 PY_AST_NODE_FIELDS = {
     'FunctionDef': {

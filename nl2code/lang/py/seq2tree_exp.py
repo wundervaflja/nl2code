@@ -5,14 +5,14 @@ from itertools import chain
 
 import sys
 
-from astnode import ASTNode
-from dataset import preprocess_dataset, gen_vocab
-from lang.py.grammar import type_str_to_type
-from lang.py.parse import parse, get_grammar, decode_tree_to_python_ast
-from lang.py.unaryclosure import get_top_unary_closures, apply_unary_closures
-from lang.util import typename, escape, unescape
-from nn.utils.generic_utils import init_logging
-from nn.utils.io_utils import serialize_to_file
+from nl2code.astnode import ASTNode
+from nl2code.dataset import preprocess_dataset, gen_vocab
+from nl2code.lang.py.grammar import type_str_to_type
+from nl2code.lang.py.parse import parse, get_grammar, decode_tree_to_python_ast
+from nl2code.lang.py.unaryclosure import get_top_unary_closures, apply_unary_closures
+from nl2code.lang.util import typename, escape, unescape
+from nl2code.nn.utils.generic_utils import init_logging
+from nl2code.nn.utils.io_utils import serialize_to_file
 
 
 def ast_tree_to_seq2tree_repr(tree):

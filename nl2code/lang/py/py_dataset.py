@@ -7,13 +7,13 @@ from itertools import chain
 import nltk
 import re
 
-from nn.utils.io_utils import serialize_to_file, deserialize_from_file
-from nn.utils.generic_utils import init_logging
+from nl2code.nn.utils.io_utils import serialize_to_file, deserialize_from_file
+from nl2code.nn.utils.generic_utils import init_logging
 
-from dataset import gen_vocab, DataSet, DataEntry, Action, APPLY_RULE, GEN_TOKEN, COPY_TOKEN, GEN_COPY_TOKEN, Vocab
-from lang.py.parse import parse, parse_tree_to_python_ast, canonicalize_code, get_grammar, parse_raw, \
+from nl2code.dataset import gen_vocab, DataSet, DataEntry, Action, APPLY_RULE, GEN_TOKEN, COPY_TOKEN, GEN_COPY_TOKEN, Vocab
+from nl2code.lang.py.parse import parse, parse_tree_to_python_ast, canonicalize_code, get_grammar, parse_raw, \
     de_canonicalize_code, tokenize_code, tokenize_code_adv, de_canonicalize_code_for_seq2seq
-from lang.py.unaryclosure import get_top_unary_closures, apply_unary_closures
+from nl2code.lang.py.unaryclosure import get_top_unary_closures, apply_unary_closures
 
 
 def extract_grammar(code_file, prefix='py'):

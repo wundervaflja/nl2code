@@ -8,7 +8,7 @@ from six.moves import zip
 from theano.sandbox.rng_mrg import MRG_RandomStreams
 from theano.tensor.shared_randomstreams import RandomStreams
 import math
-from nn.utils.config_factory import config
+from nl2code.nn.utils.config_factory import config
 
 
 def clip_norm(g, c, n):

@@ -172,7 +172,7 @@ class Grammar:
         raise KeyError('key=%s' % key_node)
 
     def get_node_type_id(self, node):
-        from tree import Tree
+        from nl2code.tree import Tree
 
         if isinstance(node, Node) or isinstance(node, Tree):
             type_repr = str(node.type)

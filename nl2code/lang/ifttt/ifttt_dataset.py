@@ -7,9 +7,9 @@ from itertools import count
 
 from nn.utils.io_utils import serialize_to_file, deserialize_from_file
 
-from lang.ifttt.grammar import IFTTTGrammar
-from parse import ifttt_ast_to_parse_tree
-from lang.grammar import Grammar
+from nl2code.lang.ifttt.grammar import IFTTTGrammar
+from nl2code.parse import ifttt_ast_to_parse_tree
+from nl2code.lang.grammar import Grammar
 import logging
 from itertools import chain
 

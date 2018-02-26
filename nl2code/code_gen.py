@@ -7,17 +7,17 @@ import os
 import logging
 from vprof import profiler
 
-from model import Model
-from dataset import DataEntry, DataSet, Vocab, Action
-import config
-from learner import Learner
-from evaluation import *
-from decoder import decode_python_dataset
-from components import Hyp
-from astnode import ASTNode
+from nl2code.model import Model
+from nl2code.dataset import DataEntry, DataSet, Vocab, Action
+from nl2code import config
+from nl2code.learner import Learner
+from nl2code.evaluation import *
+from nl2code.decoder import decode_python_dataset
+from nl2code.components import Hyp
+from nl2code.astnode import ASTNode
 
-from nn.utils.generic_utils import init_logging
-from nn.utils.io_utils import deserialize_from_file, serialize_to_file
+from nl2code.nn.utils.generic_utils import init_logging
+from nl2code.nn.utils.io_utils import deserialize_from_file, serialize_to_file
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-data')

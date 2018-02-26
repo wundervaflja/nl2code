@@ -1,8 +1,8 @@
 from collections import OrderedDict, defaultdict
 import logging
 
-from astnode import ASTNode
-from lang.util import typename
+from nl2code.astnode import ASTNode
+from nl2code.lang.util import typename
 
 class Grammar(object):
     def __init__(self, rules):
@@ -62,7 +62,7 @@ class Grammar(object):
             KeyError('key=%s' % key_node)
 
     def get_node_type_id(self, node):
-        from astnode import ASTNode
+        from nl2code.astnode import ASTNode
 
         if isinstance(node, ASTNode):
             type_repr = typename(node.type)

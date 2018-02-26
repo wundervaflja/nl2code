@@ -1,4 +1,4 @@
-from astnode import ASTNode
+from nl2code.astnode import ASTNode
 
 def ifttt_ast_to_parse_tree_helper(s, offset):
     """

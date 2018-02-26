@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from .core import Layer
-from nn.utils.theano_utils import *
-import nn.initializations as initializations
+from nl2code.nn.utils.theano_utils import *
+import nl2code.nn.initializations as initializations
 
-import nn.activations as activations
+import nl2code.nn.activations as activations
 from theano.ifelse import ifelse
 
 

@@ -4,18 +4,18 @@ import numpy as np
 import logging
 import copy
 
-from nn.layers.embeddings import Embedding
-from nn.layers.core import Dense, Layer
-from nn.layers.recurrent import BiLSTM, LSTM, CondAttLSTM
-from nn.utils.theano_utils import ndim_itensor, tensor_right_shift, ndim_tensor, alloc_zeros_matrix, shared_zeros
-import nn.initializations as initializations
-import nn.activations as activations
-import nn.optimizers as optimizers
+from nl2code.nn.layers.embeddings import Embedding
+from nl2code.nn.layers.core import Dense, Layer
+from nl2code.nn.layers.recurrent import BiLSTM, LSTM, CondAttLSTM
+from nl2code.nn.utils.theano_utils import ndim_itensor, tensor_right_shift, ndim_tensor, alloc_zeros_matrix, shared_zeros
+from nl2code.nn import initializations
+from nl2code.nn import activations 
+from nl2code.nn import optimizers
 
-import config
-from lang.grammar import Grammar
-from parse import *
-from astnode import *
+from nl2code import config
+from nl2code.lang.grammar import Grammar
+from nl2code.parse import *
+from nl2code.astnode import *
 
 
 class PointerNet(Layer):

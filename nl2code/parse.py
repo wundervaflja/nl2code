@@ -8,10 +8,10 @@ from collections import OrderedDict
 from tokenize import generate_tokens, tokenize
 import token as tk
 
-from nn.utils.io_utils import deserialize_from_file, serialize_to_file
+from nl2code.nn.utils.io_utils import deserialize_from_file, serialize_to_file
 
-from tree import *
-from grammar import *
+from nl2code.tree import *
+from nl2code.grammar import *
 
 p_elif = re.compile(r'^elif\s?')
 p_else = re.compile(r'^else\s?')
