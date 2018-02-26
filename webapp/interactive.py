@@ -5,6 +5,8 @@ import logging
 
 import numpy as np
 
+from gevent.wsgi import WSGIServer
+
 from flask import Flask, render_template
 from flask import request
 
@@ -152,5 +154,6 @@ def text2code_page():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    http_server = WSGIServer(('0.0.0.0', 5000), app)
+    http_server.serve_forever()
 
