@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block head %}
+{% endblock %}
+{% block body %}
+	<h1>dev/null.AI</h1>
+	<h6 style="visibility: hidden;">{{ version }}</h6>
+	<code>
+	if True:<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;print("Hello, World!")<br />
+	else:<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;<a href="{{ url_for('_code2text_page') }}">enter the Code2Text Test Page</a>
+	</code>
+{% endblock %}
