@@ -132,10 +132,9 @@
             {% if code %}
                 var codeList = {{ code|tojson|safe }}
                 var value = $(this).val();
-                console.log(codeList);
                 for (var i = codeList.length - 1; i >= 0; i--) {
-                    console.log(codeList[i]);
-                    if (codeList[i]['code'].replace(/(\r\n|\n|\r)/gm,"") == value) {
+                    if (codeList[i]['code'].localeCompare(value) == -1) {
+
                         $('code#code').text(codeList[i]['code']);
                         $('code#tree').text(codeList[i]['tree']);
                     }

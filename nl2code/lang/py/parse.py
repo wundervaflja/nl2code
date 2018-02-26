@@ -141,7 +141,7 @@ def parse_tree_to_python_ast(tree):
 
 
 def decode_tree_to_python_ast(decode_tree):
-    from lang.py.unaryclosure import compressed_ast_to_normal
+    from nl2code.lang.py.unaryclosure import compressed_ast_to_normal
 
     compressed_ast_to_normal(decode_tree)
     decode_tree = decode_tree.children[0]

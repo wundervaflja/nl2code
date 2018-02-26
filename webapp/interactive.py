@@ -22,7 +22,7 @@ from nl2code.decoder import decode_python_dataset
 from nl2code.evaluation import *
 from nl2code.lang.py.parse import decode_tree_to_python_ast
 from nl2code.model import Model
-# from nl2code.nn.utils.generic_utils import init_logging
+from nl2code.nn.utils.generic_utils import init_logging
 from nl2code.nn.utils.io_utils import deserialize_from_file, serialize_to_file
 
 
@@ -94,7 +94,6 @@ def start():
 
 def interactive(cmd, model, train_data):
 
-    # we play with new examples!
     query, str_map = canonicalize_query(cmd)
     vocab = train_data.annot_vocab
     query_tokens = query.split(' ')
