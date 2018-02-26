@@ -1,66 +1,94 @@
 #! /usr/bin/env python
 
-import numpy as np
-import cProfile
-import ast
-import traceback
-import argparse
 import os
 import logging
-from vprof import profiler
 
-from nl2code.model import Model
-from nl2code.dataset import DataEntry, DataSet, Vocab, Action
-from nl2code import config
-from nl2code.learner import Learner
-from nl2code.evaluation import *
-from nl2code.decoder import decode_python_dataset
-from nl2code.components import Hyp
-from nl2code.astnode import ASTNode
-
-from nl2code.nn.utils.generic_utils import init_logging
-from nl2code.nn.utils.io_utils import deserialize_from_file, serialize_to_file
-
-from nl2code.dataset import canonicalize_query, query_to_data
-from collections import namedtuple
-from nl2code.lang.py.parse import decode_tree_to_python_ast
+import numpy as np
 
 from flask import Flask, render_template
 from flask import request
-import json
+
+
+from nl2code import config
+
+from nl2code.astnode import ASTNode
+from collections import namedtuple
+from nl2code.components import Hyp
+from nl2code.dataset import canonicalize_query, query_to_data
+from nl2code.dataset import DataSet, Vocab, Action, DataEntry
+from nl2code.decoder import decode_python_dataset
+from nl2code.evaluation import *
+from nl2code.lang.py.parse import decode_tree_to_python_ast
+from nl2code.model import Model
+# from nl2code.nn.utils.generic_utils import init_logging
+from nl2code.nn.utils.io_utils import deserialize_from_file, serialize_to_file
+
 
 path = os.path.dirname(os.path.realpath(__file__))
 
-config = {'ptrnet_hidden_dim': 50, 'target_vocab_size': 2101, 'head_nt_constraint': True,
-          'random_seed': 181783, 'operation': 'interactive', 'optimizer': 'adam', 'save_per_batch': 4000,
-          'rule_embed_dim': 128, 'frontier_node_type_feed': True, 'clip_grad': 0.0, 'valid_metric': 'bleu', 
-          'max_epoch': 50, 'max_query_length': 70, 'parent_hidden_state_feed': True, 'word_embed_dim': 128, 
-          'source_vocab_size': 2490, 'node_num': 96, 'tree_attention': False, 'output_dir': 'runs', 
-          'decode_max_time_step': 100, 'data_type': 'django', 'dropout': 0.2, 'encoder_hidden_dim': 256, 
-          'parent_action_feed': True, 'encoder': 'bilstm', 'rule_num': 222, 'batch_size': 10, 'ifttt_test_split': 
-          'data/ifff.test_data.gold.id', 'attention_hidden_dim': 50, 'node_embed_dim': 64, 
-          'data': '%s/../nl2code/data/django.cleaned.dataset.freq5.par_info.refact.space_only.bin' % path, 'valid_per_batch': 4000, 
-          'enable_copy': True, 'decoder_hidden_dim': 256, 'beam_size': 15, 'mode': 'new', 
-          'model': '%s/../nl2code/models/model.django_word128_encoder256_rule128_node64.beam15.adam.simple_trans.no_unary_closure.8e39832.run3.best_acc.npz' % path, 
+CONFIG = {'ptrnet_hidden_dim': 50,
+          'target_vocab_size': 2101,
+          'head_nt_constraint': True,
+          'random_seed': 181783,
+          'operation': 'interactive',
+          'optimizer': 'adam',
+          'save_per_batch': 4000, 
+          'rule_embed_dim': 128, 
+          'frontier_node_type_feed': True,
+          'clip_grad': 0.0, 
+          'valid_metric': 'bleu', 
+          'max_query_length': 70,
+          'max_epoch': 50,
+          'parent_hidden_state_feed': True, 
+          'word_embed_dim': 128, 
+          'source_vocab_size': 2490,
+          'node_num': 96, 'tree_attention': False, 'output_dir': 'runs',
+          'decode_max_time_step': 100, 'data_type': 'django', 'dropout': 0.2,
+          'encoder_hidden_dim': 256, 'parent_action_feed': True, 'encoder': 'bilstm',
+          'rule_num': 222, 'batch_size': 10, 'ifttt_test_split': 'data/ifff.test_data.gold.id',
+          'attention_hidden_dim': 50, 'node_embed_dim': 64,  
+          'data': '%s/../nl2code/data/django.cleaned.dataset.freq3.par_info.refact.space_only.order_by_ulink_len.bin' % path,
+          'valid_per_batch': 4000, 'enable_copy': True, 'decoder_hidden_dim': 256,
+          'beam_size': 15, 'mode': 'new', 
+          'model': '%s/../nl2code/runs/model.best_acc.npz' % path, 
           'train_patience': 10}
 
 
+def get_logger():
+    logger = logging.getLogger('user_feedback')
+    logger.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    hdlr = logging.FileHandler('./user_feedback.log')
+    hdlr.setFormatter(formatter)
+    chdlr = logging.StreamHandler()
+    chdlr.setFormatter(formatter)
+    logger.addHandler(hdlr)
+    logger.addHandler(chdlr)
+    return logger
+
+LOGGER = get_logger()
+
+
 def start():
-    if not os.path.exists(config['output_dir']):
-        os.makedirs(config['output_dir'])
+    if not os.path.exists(CONFIG['output_dir']):
+        os.makedirs(CONFIG['output_dir'])
 
-    np.random.seed(config['random_seed'])
-    train_data, dev_data, test_data = deserialize_from_file(config['data'])
+    np.random.seed(CONFIG['random_seed'])
 
-    config_module = sys.modules['config']
-    for name, value in config.iteritems():
+    train_data, dev_data, test_data = deserialize_from_file(CONFIG['data'])
+    CONFIG['source_vocab_size'] = train_data.annot_vocab.size
+    CONFIG['target_vocab_size'] = train_data.terminal_vocab.size
+    CONFIG['rule_num'] = len(train_data.grammar.rules)
+    CONFIG['node_num'] = len(train_data.grammar.node_type_to_id)
+    config_module = sys.modules['nl2code.config']
+    for name, value in CONFIG.iteritems():
         setattr(config_module, name, value)
     model = Model()
     model.build()
-
-    if config['model']:
-        model.load(config['model'])
+    if CONFIG['model']:
+        model.load(CONFIG['model'])
     return model, train_data 
+
 
 def interactive(cmd, model, train_data):
 
@@ -69,21 +97,15 @@ def interactive(cmd, model, train_data):
     vocab = train_data.annot_vocab
     query_tokens = query.split(' ')
     query_tokens_data = [query_to_data(query, vocab)]
-    example = namedtuple('example', ['query', 'data'])(query=query_tokens, 
+    example = namedtuple('example', ['query', 'data'])(query=query_tokens,
                                                        data=query_tokens_data)
+    cand_list = model.decode(example, train_data.grammar, 
+                             train_data.terminal_vocab, 
+                             beam_size=CONFIG['beam_size'],
+                             max_time_step=CONFIG['decode_max_time_step'])
 
-    if hasattr(example, 'parse_tree'):
-        print 'gold parse tree:'
-        print example.parse_tree
-
-    cand_list = model.decode(example, train_data.grammar, train_data.terminal_vocab,
-                             beam_size=config['beam_size'],
-                             max_time_step=config['decode_max_time_step'])
-
-    has_grammar_error = any([c for c in cand_list if c.has_grammar_error])
-    print 'has_grammar_error: ', has_grammar_error
     results = []
-    for cid, cand in enumerate(cand_list[:5]):
+    for _, cand in enumerate(cand_list[:5]):
         res = {}
         res['score'] = cand.score
         try:
@@ -109,15 +131,26 @@ def text2code_page():
         return render_template('index.html')
     if request.method == 'POST':
         edited_code = request.form.get('edited_code')
-        if edited_code:
-            print edited_code
         text = request.form.get('text')
+        if edited_code:
+            LOGGER.info(edited_code)
+            return render_template('index.html', edited_code=edited_code)
         if text:
-            res = interactive(text, app.config['model'], app.config['train'])
-            res = sorted(res, key=lambda k: k['score'], reverse=True)
-            return render_template('index.html', code=[{'code': 'shot', 'tree': 'shit'}])
-        return render_template('index.html', text=text, code=[{'code': 'shot', 'tree': 'shit'}])
+            res = []
+            try:
+                res = interactive(text, app.config['model'], app.config['train'])
+                res = sorted(res, key=lambda k: k['score'], reverse=True)
+                return render_template('index.html', code=res, text=text)
+            except:
+                app.config['model'], app.config['train'] = start()
+                res = interactive(text, app.config['model'], app.config['train'])
+                res = sorted(res, key=lambda k: k['score'], reverse=True)
+                return render_template('index.html', code=res, text=text)
+            else:
+                return render_template('index.html', code=None, text=text)
+        return render_template('index.html')
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=8888)
+    app.run(debug=True, host='0.0.0.0')
+

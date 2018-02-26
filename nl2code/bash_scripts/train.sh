@@ -23,21 +23,21 @@ THEANO_FLAGS="mode=FAST_RUN,device=${device},floatX=float32" python -u nl2code/c
 	${commandline} \
 	train
 
-# decode testing set, and evaluate the model which achieves the best bleu and accuracy, resp.
-for model in "model.best_bleu.npz" "model.best_acc.npz"; do
-	THEANO_FLAGS="mode=FAST_RUN,device=${device},floatX=float32" python nl2code/code_gen.py \
-	-data_type ${datatype} \
-	-data nl2code/data/${dataset} \
-	-output_dir nl2code/${output} \
-	-model nl2code/${output}/${model} \
-	${commandline} \
-	decode \
-	-saveto ${output}/${model}.decode_results.test.bin
+# # decode testing set, and evaluate the model which achieves the best bleu and accuracy, resp.
+# for model in "model.best_bleu.npz" "model.best_acc.npz"; do
+# 	THEANO_FLAGS="mode=FAST_RUN,device=${device},floatX=float32" python nl2code/code_gen.py \
+# 	-data_type ${datatype} \
+# 	-data nl2code/data/${dataset} \
+# 	-output_dir nl2code/${output} \
+# 	-model nl2code/${output}/${model} \
+# 	${commandline} \
+# 	decode \
+# 	-saveto ${output}/${model}.decode_results.test.bin
 
-	python nl2code/code_gen.py \
-		-data_type ${datatype} \
-		-data nl2code/data/${dataset} \
-		-output_dir nl2code/${output} \
-		evaluate \
-		-input nl2code/${output}/${model}.decode_results.test.bin
-done
+# 	python nl2code/code_gen.py \
+# 		-data_type ${datatype} \
+# 		-data nl2code/data/${dataset} \
+# 		-output_dir nl2code/${output} \
+# 		evaluate \
+# 		-input nl2code/${output}/${model}.decode_results.test.bin
+# done

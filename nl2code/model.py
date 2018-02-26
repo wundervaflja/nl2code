@@ -604,7 +604,6 @@ class Model:
         weights_dict = np.load(model_file)
 
         # assert len(weights_dict.files) == len(self.params_dict)
-
         for p_name, p in self.params_dict.iteritems():
             if p_name not in weights_dict:
                 raise RuntimeError('parameter [%s] not in saved weights file', p_name)

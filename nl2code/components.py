@@ -52,7 +52,6 @@ class PointerNet(Layer):
 
 class Hyp:
     def __init__(self, *args):
-        print args
         if isinstance(args[0], Hyp):
             hyp = args[0]
             self.grammar = hyp.grammar

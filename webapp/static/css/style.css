@@ -3,7 +3,7 @@ html,body,.container {
 }
 
 .nav {
-	border-bottom: 4px solid #e5eaf0;
+    border-bottom: 4px solid #e5eaf0;
 }
 
 .container {
@@ -14,7 +14,7 @@ html,body,.container {
 
 
 .pane {
-	background: rgb(246, 248, 250);
+    background: rgb(246, 248, 250);
 }
 
 .full-row {
@@ -65,3 +65,4 @@ html,body,.container {
 .correct {
   background: #f5f5f5;
 }
+

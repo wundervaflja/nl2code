@@ -210,15 +210,24 @@ if __name__ == '__main__':
         from lang.py.parse import decode_tree_to_python_ast
         assert model is not None
 
-        while True:
-            cmd = raw_input('example id or query: ')
+
+        import socket
+        from threading import Thread
+
+
+        MAX_LENGTH = 4096
+
+        def handle(clientsocket):
+          # while 1:
+            cmd = clientsocket.recv(MAX_LENGTH)
+            print cmd
             if args.mode == 'dataset':
                 try:
                     example_id = int(cmd)
                     example = [e for e in test_data.examples if e.raw_id == example_id][0]
                 except:
                     print 'something went wrong ...'
-                    continue
+                    # continue
             elif args.mode == 'new':
                 # we play with new examples!
                 query, str_map = canonicalize_query(cmd)
@@ -258,3 +267,70 @@ if __name__ == '__main__':
                     print 'n_timestep: %d' % cand.n_timestep
                     print 'ast size: %d' % cand.tree.size
                     print '*' * 60
+
+
+
+        serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        PORT = 10000
+        HOST = '127.0.0.1'
+
+        serversocket.bind((HOST, PORT))
+        serversocket.listen(10)
+
+        while 1:
+            #accept connections from outside
+            (clientsocket, address) = serversocket.accept()
+
+            ct = Thread(target=handle, args=(clientsocket,))
+            ct.run()
+
+
+        # while True:
+        #     cmd = raw_input('example id or query: ')
+            # if args.mode == 'dataset':
+            #     try:
+            #         example_id = int(cmd)
+            #         example = [e for e in test_data.examples if e.raw_id == example_id][0]
+            #     except:
+            #         print 'something went wrong ...'
+            #         continue
+            # elif args.mode == 'new':
+            #     # we play with new examples!
+            #     query, str_map = canonicalize_query(cmd)
+            #     vocab = train_data.annot_vocab
+            #     query_tokens = query.split(' ')
+            #     query_tokens_data = [query_to_data(query, vocab)]
+            #     example = namedtuple('example', ['query', 'data'])(query=query_tokens, data=query_tokens_data)
+
+            # if hasattr(example, 'parse_tree'):
+            #     print 'gold parse tree:'
+            #     print example.parse_tree
+
+            # cand_list = model.decode(example, train_data.grammar, train_data.terminal_vocab,
+            #                          beam_size=args.beam_size, max_time_step=args.decode_max_time_step, log=True)
+
+            # has_grammar_error = any([c for c in cand_list if c.has_grammar_error])
+            # print 'has_grammar_error: ', has_grammar_error
+
+            # for cid, cand in enumerate(cand_list[:5]):
+            #     print '*' * 60
+            #     print 'cand #%d, score: %f' % (cid, cand.score)
+
+            #     try:
+            #         ast_tree = decode_tree_to_python_ast(cand.tree)
+            #         code = astor.to_source(ast_tree)
+            #         print 'code: ', code
+            #         print 'decode log: ', cand.log
+            #     except:
+            #         print "Exception in converting tree to code:"
+            #         print '-' * 60
+            #         print 'raw_id: %d, beam pos: %d' % (example.raw_id, cid)
+            #         traceback.print_exc(file=sys.stdout)
+            #         print '-' * 60
+            #     finally:
+            #         print '* parse tree *'
+            #         print cand.tree.__repr__()
+            #         print 'n_timestep: %d' % cand.n_timestep
+            #         print 'ast size: %d' % cand.tree.size
+            #         print '*' * 60

@@ -18,11 +18,11 @@ else
 fi
 
 # run interactive mode on trained models
-THEANO_FLAGS="mode=FAST_RUN,device=${device},floatX=float32" python code_gen.py \
+THEANO_FLAGS="mode=FAST_RUN,device=${device},floatX=float32" python nl2code/code_gen.py \
     -data_type ${datatype} \
-    -data ${dataset} \
-    -output_dir ${output} \
-    -model runs/${model} \
+    -data nl2code/${dataset} \
+    -output_dir nl2code/${output} \
+    -model nl2code/runs/${model} \
     ${commandline} \
     interactive \
     -mode new
