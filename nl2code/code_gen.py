@@ -135,7 +135,7 @@ if __name__ == '__main__':
         args.node_num = len(train_data.grammar.node_type_to_id)
 
     logging.info('current config: %s', args)
-    config_module = sys.modules['config']
+    config_module = sys.modules['nl2code.config']
     for name, value in vars(args).iteritems():
         setattr(config_module, name, value)
 
