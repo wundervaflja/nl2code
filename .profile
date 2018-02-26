@@ -1,0 +1,3 @@
+export MKL_THREADING_LAYER=GNU
+export PYTHONPATH=.
+
