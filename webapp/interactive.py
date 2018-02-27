@@ -135,7 +135,8 @@ def text2code_page():
         text = request.form.get('text')
         if edited_code:
             LOGGER.info(edited_code)
-            return render_template('index.html', edited_code=edited_code)
+            LOGGER.info(text)
+            return render_template('index.html', edited_code=edited_code, edited_code_text=text, poup_alert=True)
         if text:
             res = []
             try:
@@ -148,7 +149,7 @@ def text2code_page():
                 res = sorted(res, key=lambda k: k['score'], reverse=True)
                 return render_template('index.html', code=res, text=text)
             else:
-                return render_template('index.html', code=None, text=text)
+                return render_template('index.html', code=[{"code": "print shit", 'tree': 'tree'}], text=text)
         return render_template('index.html')
 
 

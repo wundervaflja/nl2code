@@ -95,6 +95,11 @@
                     </div>
                     <div class="collapse" id="correctedInput">
                         <label>Provide correct version</label>
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <textarea class="form-control" rows="5"  name="text" id="text" style="display:none;">{{ text|safe }}</textarea>
+                            </div>
+                        </div>
                         <div class="form-group" >
                             <div class="col-sm-12 ">
                                 <textarea class="form-control " rows="5"  name="edited_code" id="edited_code" style="background: #f5f5f5"></textarea>
@@ -102,7 +107,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <input type="submit"  name="confirmed" id="confirmed" class="btn btn-primary mb-2" value="Tnx!">
+                                <input type="submit"  name="confirmed" id="userFeedback" class="btn btn-primary mb-2" value="Tnx!!!">
                             </div>
                         </div>
                     </div>
@@ -111,7 +116,25 @@
             </div>
         </div>
     </div>
-
+  <!-- Modal -->
+  <div class="modal fade" id="alertModal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title text-center">Thank You!</h4>
+        </div>
+          <div class="modal-body">
+            <p> {{ edited_code_text }} </p>
+            <pre> {{ edited_code }}</pre>
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/scripts.js"></script>
@@ -144,6 +167,11 @@
 
         $('input#corrected').click(function(){
             $('#correctedInput').show();
+        });
+        $(function() {
+            if ( '{{ poup_alert }}' ) {
+                $('#alertModal').modal('show'); 
+            }
         });
     </script>
   </body>
